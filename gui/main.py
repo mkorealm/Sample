@@ -1,20 +1,7 @@
 import os
 import tkinter as tk
 
-
-def select_table(file):
-    import openpyxl
-    columns = []  # return
-    values = []  # return
-    try:
-        wb = openpyxl.load_workbook(filename=file)
-        column = wb.worksheets[0]
-        for row in column:
-            values.append(row[0].value)
-            columns.append(row[1].value)
-    except Exception as ex:
-        showerror("Ошибка!", str(ex))
-
+import excel.modules.function
 
 script_dir = os.path.dirname(__file__)
 
@@ -68,3 +55,6 @@ class Second(tk.Frame):
         lbl.pack()
         btn = tk.Button(self, text="Вернуться в предыдущий класс", command=lambda: controller.show_frame(First))
         btn.pack()
+
+
+excel.modules.function.initial_data()

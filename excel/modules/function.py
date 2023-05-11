@@ -11,3 +11,17 @@ def insert_zapis(lst: list):
         writer.close()
     except Exception as ex:
         showerror("Ошибка", ex)
+
+
+def initial_data():
+    from tkinter.messagebox import showerror
+    import pandas
+
+    from gui.main import script_dir
+
+    try:
+        xl = pandas.ExcelFile(script_dir + "\\..\\Initial.xlsx")
+        result = xl.parse(xl.sheet_names[0])
+        print(result)
+    except Exception as ex:
+        showerror("Ошибка", ex)
