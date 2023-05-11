@@ -1,7 +1,7 @@
 import os
 import tkinter as tk
 
-import excel.modules.function
+from tkinter import ttk
 
 script_dir = os.path.dirname(__file__)
 
@@ -25,7 +25,7 @@ class Windows(tk.Tk):
         container.pack()
 
         self.frames = {}
-        for F in (First, Second):
+        for F in (First, Second, Table):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(column=0, row=0, sticky="nsew")
@@ -43,8 +43,11 @@ class First(tk.Frame):
 
         lbl = tk.Label(self, text=f"Это {__class__.__name__} класс")
         lbl.pack()
-        btn = tk.Button(self, text="Перейти в следующий класс", command=lambda: controller.show_frame(Second))
-        btn.pack()
+        btn_1 = tk.Button(self, text="Перейти в следующий класс", command=lambda: controller.show_frame(Second))
+        btn_1.pack()
+        btn_2 = tk.Button(self, text="Перейти в класс отображения таблицы",
+                          command=lambda: controller.show_frame(Table))
+        btn_2.pack()
 
 
 class Second(tk.Frame):
@@ -57,4 +60,31 @@ class Second(tk.Frame):
         btn.pack()
 
 
-excel.modules.function.initial_data()
+class Table(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        def set_table():
+            from excel.modules.function import initial_data
+            try:
+                result = initial_data()
+                columns = []
+                for column in result:
+                    columns.append(column)
+                values = result.values
+
+                Treeview = ttk.Treeview(self, columns=columns, show="headings")
+
+                Treeview.heading("Проверка 1", text="Проверка 1")
+                Treeview.heading("Проверка 2", text="Проверка 2")
+
+                for value in values:
+                    for i in value:
+                        Treeview.insert("", tk.END, values=i)
+
+                Treeview.pack()
+            except Exception as ex:
+                showerror("Даные не могут быть загружены", ex)
+
+        btn = tk.Button(self, text="Выгрузить данные", command=set_table)
+        btn.pack()

@@ -22,6 +22,6 @@ def initial_data():
     try:
         xl = pandas.ExcelFile(script_dir + "\\..\\Initial.xlsx")
         result = xl.parse(xl.sheet_names[0])
-        print(result)
+        return result
     except Exception as ex:
         showerror("Ошибка", ex)
